@@ -15,32 +15,34 @@ password:CryptoJS.AES.encrypt(req.body.password, process.env.SECRET_KEY).toStrin
     try{
         const user= await newUser.save();
         res.status(200).json(user);
-    }catch(error){
-res.status(500).json(error)
+    }catch(err){
+res.status(500).json(err)
     }
     
   
 });
 
-//login
- router.post("/login", async (req, res)=>{
-    try{
-//find user
-const user= await User.findOne({ email:req.body.email});
-!user && res.status(401).json("wrong password or username");
 
+
+ //login
+ router.post("/login", async(req, res)=>{
+    try{
+const user=await User.findOne({email:req.body.email});
+if(!user){
+   return res.status(401).json("wrong password or username")};
 // Decrypt
 const bytes  = CryptoJS.AES.decrypt(user.password, process.env.SECRET_KEY);
 const originalPassword = bytes.toString(CryptoJS.enc.Utf8);
-
-originalPassword !== req.body.password &&
-res.status(401).json("wrong password or username");
- const {password, ...info}=user._doc;
-//if the password are equal
- return res.status(200).json(user);
-
+//if password are not equals
+if(originalPassword !==req.body.password) {
+  return  res.status(401).json("wrong password or username");
+} 
+// if the password are equals
+const {password, ...info}=user._doc
+return res.status(200).json(info)
     }catch(err){
-       return res.status(500).json(err)
+return res.status(500).json(err)
     }
-}) 
+ })
+
 module.exports=router;
