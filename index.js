@@ -4,6 +4,7 @@ const mongoose=require("mongoose");
 //go and create mongo db cluster
 const dotenv=require("dotenv");
 const authRoute=require("./routes/auth.js")
+const userRoute=require("./routes/User.js")
 dotenv.config();//.env configuration
 
 //moogoosedb connection
@@ -18,6 +19,7 @@ dotenv.config();//.env configuration
      
     app.use("/api/auth", authRoute);//make a request, take the end point
     //api/auth and it belong to the route of authRoute    
+    app.use("/api/users", userRoute);
 
 app.listen(3000, ()=>{
     console.log("app is listening to port 3000")
