@@ -23,14 +23,14 @@ return res.status(200).json(savedMovie)
 //update
 router.put("/:id", verify, async (req, res)=>{
     if(req.user.isAdmin ){
-     //update new movie
-     const updatedMovie= await new Movie.findByIdAndUpdate(req.params.id,
-        {$set:req.body}, {new:true});
-     //save inside db
-     try{
- const savedMovie= await newMovie.save();
- return res.status(200).json(savedMovie)
-     }catch(err){
+        try{
+//update new movie
+const updatedMovie= await Movie.findByIdAndUpdate(req.params.id,
+    {$set:req.body}, {new:true});
+    return res.status(200).json(updatedMovie)
+        }
+   
+   catch(err){
          return res.status(500).json(err)
      }
     } else{
@@ -54,9 +54,9 @@ router.delete("/:id", verify, async (req, res)=>{
     }
  })
 
- //get
-router.delete("/:id", verify, async (req, res)=>{
-     //save inside db
+ //Get
+router.get("/find/:id", verify, async (req, res)=>{
+
      try{
  const movie=await Movie.findById(req.params.id);
  return res.status(200).json(movie)
