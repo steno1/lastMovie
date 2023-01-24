@@ -1,4 +1,5 @@
 const router=require("express").Router();
+//const { aggregate } = require("../models/User.js");
 const Movie=require("../models/User.js");
 const verify=require("../verifyToken.js")
 
@@ -65,6 +66,38 @@ router.get("/find/:id", verify, async (req, res)=>{
      }
     
  })
+
+ //Get random
+router.get("/random", verify, async (req, res)=>{
+const type=req.query.type;
+let movie;
+/* N/B $ match(aggregation) in mongodb filters the documents to pass only
+the documents that match the specified condtions(s\0 to the next
+    pipeline stage.
+    it has the following prototype form {$match:{<query>}}. check
+    google for details*/
+    try{
+if(type==="series"){
+    /*if type="series", find a random series */
+movie= await Movie.aggregate([
+    {$match:{isSeries:true}},//find all series
+    /*showing one random series */
+    {$sample:{size:1}}//then give us just a series sample
+])
+}else{
+    movie= await Movie.aggregate([
+        {$match:{isSeries:false}},//find all movies
+        /*showing one random movies */
+        {$sample:{size:1}}//then give us just a movie sample
+    ])
+}
+/*After finding our sample then return the following statusCode */
+return res.status(200).json(movie)
+    }catch(err){
+        return res.status(500).json(err)
+    }
+   
+})
 
 
 

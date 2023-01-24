@@ -1,6 +1,7 @@
 const mongoose=require("mongoose");
 // user schema
 const MovieSchema=new mongoose.Schema({
+    //movie properties
   title:{type:String,required:true,unique:true },/* 
   all movies will have a title and no two movies will have one title */
   desc:{type:String},
