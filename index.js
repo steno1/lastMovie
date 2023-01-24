@@ -20,8 +20,8 @@ dotenv.config();//.env configuration
      
     app.use("/api/auth", authRoute);//make a request, take the end point
     //api/auth and it belong to the route of authRoute    
-    app.use("/api/users", userRoute);
-    app.use("/api/movie", movieRoute);
+    app.use("/api/users", userRoute);//users endpoint
+    app.use("/api/movie", movieRoute);//movie endpoint
 
 app.listen(3000, ()=>{
     console.log("app is listening to port 3000")

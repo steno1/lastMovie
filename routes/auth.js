@@ -45,10 +45,11 @@ const accessToken=jwt.sign({
     id:user._id,
     isAdmin:user.isAdmin},
     process.env.SECRET_KEY,
-    {expiresIn:"5d"})
+    {expiresIn:"7d"})
 // if the password are equals
 const {password, ...info}=user._doc /*Destructure the doc, and
-take all data, except password
+take all data, except password, to prevent returning password
+
  */
     return res.status(200).json({...info, accessToken})
 }

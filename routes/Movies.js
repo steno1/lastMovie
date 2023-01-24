@@ -1,6 +1,5 @@
 const router=require("express").Router();
-//const { aggregate } = require("../models/User.js");
-const Movie=require("../models/User.js");
+const Movie=require("../models/Movie.js");
 const verify=require("../verifyToken.js")
 
 //routes
@@ -27,7 +26,8 @@ router.put("/:id", verify, async (req, res)=>{
         try{
 //update new movie
 const updatedMovie= await Movie.findByIdAndUpdate(req.params.id,
-    {$set:req.body}, {new:true});
+    {$set:req.body}, {new:true});/* new:true is a configuration that returns
+    new updated user*/
     return res.status(200).json(updatedMovie)
         }
    
