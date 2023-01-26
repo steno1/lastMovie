@@ -69,10 +69,11 @@ router.get("/find/:id", verify, async (req, res)=>{
 
  //Get random
 router.get("/random", verify, async (req, res)=>{
-const type=req.query.type;
-let movie;
-/* N/B $ match(aggregation) in mongodb filters the documents to pass only
-the documents that match the specified condtions(s\0 to the next
+const type=req.query.type;/* query is used when there are choices in 
+an endpoint*/
+let movie;//a movie variable
+/* N/B $match(aggregation) in mongodb filters the documents to pass only
+the documents that match the specified condtions(s) to the next
     pipeline stage.
     it has the following prototype form {$match:{<query>}}. check
     google for details*/
@@ -98,6 +99,23 @@ return res.status(200).json(movie)
     }
    
 })
+
+//get all
+router.get("/", verify, async (req, res)=>{
+    if(req.user.isAdmin ){
+     
+     //save inside db
+     try{
+ const allMovies=await Movie.find();
+ return res.status(200).json(allMovies.reverse())
+     }catch(err){
+         return res.status(500).json(err)
+     }
+    } else{
+     return res.status(403).json("you are not allowed")
+    }
+ })
+
 
 
 

@@ -57,6 +57,7 @@ router.delete("/:id", verify, async (req, res)=>{
  //get all
  router.get("/", verify, async (req, res)=>{
     const query=req.query.new;
+    //N/B query is used when you have two options in the endpoints
     if(req.user.isAdmin ){
      
      try{
